@@ -1,0 +1,15 @@
+@media only screen and (max-width: 600px) {
+  .btn-login-container {
+    flex-wrap: wrap;
+  }
+
+  .btn-login-google,
+  .btn-login-facebook {
+    width: 100%;
+    display: flex;
+  }
+}
+
+a:hover {
+  text-decoration: underline;
+}

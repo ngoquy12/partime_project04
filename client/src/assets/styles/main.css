@@ -1,0 +1,13 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.q-btn-primary {
+  background-color: #1677ff !important;
+}
+
+.q-btn-primary:hover {
+  background-color: #4096ff !important;
+}

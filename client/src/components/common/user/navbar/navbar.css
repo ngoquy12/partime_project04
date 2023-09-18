@@ -1,0 +1,7 @@
+:where(.css-dev-only-do-not-override-i0102m).ant-btn-primary {
+  background-color: #1677ff !important;
+}
+
+:where(.css-dev-only-do-not-override-i0102m).ant-btn-primary:hover {
+  background-color: #4096ff !important;
+}

@@ -92,8 +92,8 @@ const Login: React.FC<{}> = () => {
           <div className="flex justify-center">
             <Link to="/">
               <img
-                className="rounded-full h-16 w-16"
-                src="https://thietkelogo.vn/wp-content/uploads/2017/11/111.jpg"
+                className="h-17 w-44"
+                src="https://rikkei.edu.vn/wp-content/uploads/2022/04/Logo-Rikkei.png"
                 alt=""
               />
             </Link>

@@ -36,14 +36,6 @@ const Login: React.FC<{}> = () => {
       .catch((error) => console.log(error.message));
   };
 
-  // Hàm đăng nhập với Facebook
-  const signInWithFacebook = () => {
-    const provider = new FacebookAuthProvider();
-    signInWithPopup(auth, provider)
-      .then((response) => console.log(response))
-      .catch((error) => console.log(error));
-  };
-
   // Hàm xử lý dữ liệu đầu vào
   const validate = (name: string, value: string) => {
     switch (name) {
@@ -88,7 +80,10 @@ const Login: React.FC<{}> = () => {
   return (
     <>
       <div className="flex justify-center items-center min-h-screen">
-        <form className="border p-7 rounded shadow-md" onSubmit={handleLogin}>
+        <form
+          className="border w-3/12 p-7 rounded shadow-md"
+          onSubmit={handleLogin}
+        >
           <div className="flex justify-center">
             <Link to="/">
               <img
@@ -157,10 +152,10 @@ const Login: React.FC<{}> = () => {
             <div>Hoặc</div>
             <div className="border w-2/5"></div>
           </div>
-          <div className="mt-3 flex gap-3 btn-login-container">
+          <div className="mt-3 w-full">
             <Button
               onClick={signInWithGoogle}
-              className="flex items-center gap-2 btn-login-google"
+              className="flex justify-center items-center gap-2 w-full"
             >
               <img
                 width={25}
@@ -169,18 +164,6 @@ const Login: React.FC<{}> = () => {
                 alt=""
               />
               Đăng nhập với Google
-            </Button>
-            <Button
-              onClick={signInWithFacebook}
-              className="flex items-center gap-2 btn-login-facebook "
-            >
-              <img
-                width={25}
-                height={25}
-                src="https://1.bp.blogspot.com/-S8HTBQqmfcs/XN0ACIRD9PI/AAAAAAAAAlo/FLhccuLdMfIFLhocRjWqsr9cVGdTN_8sgCPcBGAYYCw/s1600/f_logo_RGB-Blue_1024.png"
-                alt=""
-              />
-              Đăng nhập với Facebook
             </Button>
           </div>
           <div className="mt-3 text-center">

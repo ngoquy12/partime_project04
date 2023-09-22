@@ -71,7 +71,7 @@ const Navbar: React.FC<{}> = () => {
   ];
   return (
     <>
-      <div className="w-full px-4 h-14 bg-black text-white flex justify-between items-center">
+      <div className="w-full sticky top-0 px-4 h-14 bg-black text-white flex justify-between items-center">
         <div className="flex gap-4 items-center">
           <Link to="/">{resourceHeader.homePage}</Link>
           <Link to="/list-product">{resourceHeader.product}</Link>

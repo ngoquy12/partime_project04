@@ -6,6 +6,9 @@ export default {
       colors: {
         "tagA-blue": "#1677ff",
       },
+      backgroundColor: {
+        "rgba-05": "rgba(0,0,0,0.5)",
+      },
     },
   },
   plugins: [],

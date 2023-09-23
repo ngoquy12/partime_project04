@@ -9,22 +9,69 @@ import {
   message,
 } from "antd";
 const { TextArea } = Input;
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllCategory } from "../../../../services/categoryService";
+import { store } from "../../../../firebase/firebase.config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { RcFile } from "antd/es/upload";
 
 const Form_Add_Product: React.FC<{ closeForm: any }> = ({ closeForm }) => {
+  const disptch = useDispatch();
+  const categories = useSelector((cat: any) => cat?.category?.data?.categories);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const [urlDownload, setUrlDownload] = useState(null);
+
+  console.log("urlDownload", urlDownload);
+
+  const handleSelectChange = (value: any) => {
+    setSelectedValue(value);
+  };
+
+  useEffect(() => {
+    disptch(getAllCategory());
+  }, [disptch]);
+
+  // Tạo một tham chiếu đến thư mục chứa tài nguyên trên firebase
+  const imageRef = ref(store, "images/");
+
   const props: UploadProps = {
     name: "file",
     headers: {
       authorization: "authorization-text",
     },
     onChange(info) {
-      if (info.file.status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
+      // lấy ra url của hình ảnh
       if (info.file.status === "done") {
-        message.success(`${info.file.name} file uploaded successfully`);
+        const downloadURL = info.file.response.url;
+        // lưu trũ ảnh vào trong state
+        setUrlDownload(downloadURL);
+        // hiển thị thông báo upload ảnh thành công
+        message.success("Tải ảnh lên thành công.");
       } else if (info.file.status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
+        // hiển thị thông báo upload ảnh thất bại
+        message.error("Tải ảnh lên thất bại.");
+      }
+    },
+    customRequest: async ({ file, onSuccess, onError }) => {
+      console.log("file", file);
+
+      try {
+        const rcFile = file as RcFile;
+
+        // Tạo một tham chiếu đến firebase store
+        const imgRef = ref(imageRef, rcFile.name);
+
+        //Tải ảnh lên firebase
+        await uploadBytes(imgRef, rcFile);
+
+        // Lấy url về
+        const downLoadURL = await getDownloadURL(imgRef);
+
+        // Gọi onSucces khi thành công
+        onSuccess?.({ url: downLoadURL });
+      } catch (error: any) {
+        onError?.(error);
       }
     },
   };
@@ -48,42 +95,26 @@ const Form_Add_Product: React.FC<{ closeForm: any }> = ({ closeForm }) => {
             <Select
               className="w-full"
               showSearch
+              value={selectedValue}
+              onChange={handleSelectChange}
               placeholder="Nhập từ khóa tìm kiếm"
               optionFilterProp="children"
               filterOption={(input, option) =>
+                typeof option?.label === "string" &&
                 (option?.label ?? "").includes(input)
               }
               filterSort={(optionA, optionB) =>
-                (optionA?.label ?? "")
-                  .toLowerCase()
-                  .localeCompare((optionB?.label ?? "").toLowerCase())
+                typeof optionA?.label === "string" &&
+                typeof optionB?.label === "string"
+                  ? optionA.label
+                      .toLowerCase()
+                      .localeCompare(optionB.label.toLowerCase())
+                  : 0
               }
-              options={[
-                {
-                  value: "1",
-                  label: "Not Identified",
-                },
-                {
-                  value: "2",
-                  label: "Closed",
-                },
-                {
-                  value: "3",
-                  label: "Communicated",
-                },
-                {
-                  value: "4",
-                  label: "Identified",
-                },
-                {
-                  value: "5",
-                  label: "Resolved",
-                },
-                {
-                  value: "6",
-                  label: "Cancelled",
-                },
-              ]}
+              options={categories.map((cat: any) => ({
+                value: cat.CategoryId,
+                label: cat.CategoryName,
+              }))}
             />
           </div>
           <div className="mb-3 flex flex-col gap-2">

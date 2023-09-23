@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA0uB_qwXm2Cy0n2UtLhXdMJMmy6UuLH_s",
@@ -12,6 +13,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+const store = getStorage(app);
+
+export { store };
 
 // Dịch vụ đăng nhập với google
 export const provider = new GoogleAuthProvider();
